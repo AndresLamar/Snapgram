@@ -105,7 +105,7 @@ export const useFollowUser = () => {
 
     return useMutation({
         mutationFn: ({followerId, followingId, isFollow}: {followerId: string, followingId: string, isFollow: boolean}) => followUser(followerId, followingId, isFollow),
-        onSuccess: (data, variables) => {
+        onSuccess: (_data, variables) => {
             const { followingId } = variables;
 
             queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.GET_FOLLOWS_FOR_USER, followingId] })
@@ -200,7 +200,7 @@ export const useCreateComment = () => {
 
         return { previousData, comment };
     },
-    onError: (error, variables, context) => {
+    onError: (error, _variables, context) => {
         console.error(error)
         
         if(context?.previousData != null && context?.comment.post_id != null) {
@@ -285,7 +285,7 @@ export const useLikePost = () => {
 
             return { previousData, postId };
         },
-        onError: (error, variables, context) => {
+        onError: (error, _variables, context) => {
             console.error(error)
             
             if(context?.previousData != null && context?.postId != null) {
@@ -313,7 +313,7 @@ export const useSavePost = () => {
 
             return { previousData, postId };
         },
-        onError: (error, variables, context) => {
+        onError: (error, _variables, context) => {
             console.error(error)
             
             if(context?.previousData != null && context?.postId != null) {

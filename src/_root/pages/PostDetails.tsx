@@ -76,7 +76,7 @@ function PostDetails() {
 
                 <Link to={`/profile/${post?.creator_id}`} className="flex items-center gap-3">
                     <img 
-                    src={post?.creator[0]?.imageUrl ||'/assets/icons/profile-placeholder.svg'} alt="creator" 
+                    src={post?.creator[0]?.imageurl ||'/assets/icons/profile-placeholder.svg'} alt="creator" 
                     className='rounded-full w-8 h-8 lg:w-12 lg:h-12'
                     />
 
@@ -154,7 +154,7 @@ function PostDetails() {
             
             <div className='flex w-full gap-3'>
               <img 
-                src={ user?.imageUrl || '/assets/icons/profile-placeholder.svg' }
+                src={user?.imageurl || '/assets/icons/profile-placeholder.svg' }
                 alt="comment_creator"
                 className='w-9 h-9 rounded-full' 
               />
