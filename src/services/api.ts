@@ -4,7 +4,7 @@ import { INewUser, INewPost, IUpdatePost, IUpdateUser, INewComment } from "@/typ
 
 export async function signInAccount(user: { email: string, password: string}){
     try{
-        const logedUser = await fetch('/api/login', {
+        const logedUser = await fetch('https://snapgram-backend-z81v.onrender.com/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
