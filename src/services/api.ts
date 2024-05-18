@@ -1,10 +1,12 @@
 import { INewUser, INewPost, IUpdatePost, IUpdateUser, INewComment } from "@/types";
 
+const BASE_URL = 'https://snapgram-backend-z81v.onrender.com'
+
 /* LOGIN */
 
 export async function signInAccount(user: { email: string, password: string}){
     try{
-        const logedUser = await fetch('https://snapgram-backend-z81v.onrender.com/api/login', {
+        const logedUser = await fetch(`${BASE_URL}/api/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -27,7 +29,7 @@ export async function signInAccount(user: { email: string, password: string}){
 export async function createUserAccount(user: INewUser){
     try {
 
-        const newAccount = await fetch('/api/users', {
+        const newAccount = await fetch(`${BASE_URL}/api/users`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -49,7 +51,7 @@ export async function createUserAccount(user: INewUser){
 
 export async function getCurrentUser (user: { username: string }) {
     try {                        
-        const currentUser = await fetch('/api/users/getUser', {
+        const currentUser = await fetch(`${BASE_URL}/api/users/getUser`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -70,7 +72,7 @@ export async function getUserById (user_id: string) {
     try {
         const token = localStorage.getItem('cookieFallback') ?? ''
 
-        const response = await fetch(`/api/users/${user_id}`, {
+        const response = await fetch(`${BASE_URL}/api/users/${user_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -97,7 +99,7 @@ export async function getPostsForUser({ pageParam, limit, userId }: { pageParam:
     try {
         const token = localStorage.getItem('cookieFallback') ?? ''
 
-        const response = await fetch(`/api/users/getPostsForUser/${userId}?page=${pageParam}&limit=${limit}`, {
+        const response = await fetch(`${BASE_URL}/api/users/getPostsForUser/${userId}?page=${pageParam}&limit=${limit}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -122,7 +124,7 @@ export async function getPostsLikedForUser({ pageParam, limit, userId }: { pageP
     try {
         const token = localStorage.getItem('cookieFallback') ?? ''
 
-        const response = await fetch(`/api/users/getPostsLikedForUser/${userId}?page=${pageParam}&limit=${limit}`, {
+        const response = await fetch(`${BASE_URL}/api/users/getPostsLikedForUser/${userId}?page=${pageParam}&limit=${limit}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -148,7 +150,7 @@ export async function getUsers({ pageParam, limit }: { pageParam: number; limit:
 
         const token = localStorage.getItem('cookieFallback') ?? ''
 
-        const response = await fetch(`/api/users/getUsers?page=${pageParam}&limit=${limit}`, {
+        const response = await fetch(`${BASE_URL}/api/users/getUsers?page=${pageParam}&limit=${limit}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -176,7 +178,7 @@ export async function followUser(followerId: string, followingId: string, isFoll
 
         const method = isFollow ? 'POST' : 'DELETE';
 
-        await fetch(`/api/users/${isFollow ? 'follow' : 'unFollow'}`, {
+        await fetch(`${BASE_URL}/api/users/${isFollow ? 'follow' : 'unFollow'}`, {
             method,
             headers: {
                 'Authorization': `bearer ${token}`,    
@@ -193,7 +195,7 @@ export async function followUser(followerId: string, followingId: string, isFoll
 export async function getFollows(userId: string){
 
     try {        
-        const result = await fetch(`/api/users/follows/${userId}`, {
+        const result = await fetch(`${BASE_URL}/api/users/follows/${userId}`, {
             method: 'GET',
         })
 
@@ -210,7 +212,7 @@ export async function getPostsSavedByuser({ pageParam, limit, userId }: { pagePa
     try {
         const token = localStorage.getItem('cookieFallback') ?? ''
 
-        const response = await fetch(`/api/users/getPostsSaved/${userId}?page=${pageParam}&limit=${limit}`, {
+        const response = await fetch(`${BASE_URL}/api/users/getPostsSaved/${userId}?page=${pageParam}&limit=${limit}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -252,7 +254,7 @@ export async function updateProfile(user: IUpdateUser ){
         const token = localStorage.getItem('cookieFallback') ?? ''
 
         // Save post to database
-        const updatedUser = await fetch(`/api/users/${user.userId} `, {
+        const updatedUser = await fetch(`${BASE_URL}/api/users/${user.userId} `, {
             method: 'PUT',
             headers: {
                 'Authorization': `bearer ${token}`,    
@@ -288,7 +290,7 @@ export async function createPost(post: INewPost){
         const token = localStorage.getItem('cookieFallback') ?? ''
 
         // Save post to database
-        const newPost = await fetch('/api/posts', {
+        const newPost = await fetch(`${BASE_URL}/api/posts`, {
             method: 'POST',
             headers: {
                 'Authorization': `bearer ${token}`,    
@@ -311,7 +313,7 @@ export async function getRecentPosts(){
         const token = localStorage.getItem('cookieFallback') ?? ''
 
         
-        const recentPosts = await fetch('/api/posts', {
+        const recentPosts = await fetch(`${BASE_URL}/api/posts`, {
             method: 'GET',
             headers: {
                 'Authorization': `bearer ${token}`,    
@@ -332,7 +334,7 @@ export async function getPostById(postId: number){
     try {
         const token = localStorage.getItem('cookieFallback') ?? ''
         
-        const post = await fetch(`/api/posts/${postId}`, {
+        const post = await fetch(`${BASE_URL}/api/posts/${postId}`, {
             method: 'GET',
             headers: {
                 'Authorization': `bearer ${token}`
@@ -352,7 +354,7 @@ export async function createComment(comment: INewComment){
         const token = localStorage.getItem('cookieFallback') ?? ''
 
         // Save post to database
-        const response = await fetch('/api/posts/comment', {
+        const response = await fetch(`${BASE_URL}/api/posts/comment`, {
             method: 'POST',
             headers: {
                 'Authorization': `bearer ${token}`,    
@@ -373,7 +375,7 @@ export async function getCommentsForPost({ pageParam, limit, postId }: { pagePar
     try {
         const token = localStorage.getItem('cookieFallback') ?? ''
 
-        const response = await fetch(`/api/posts/comments/${postId}?page=${pageParam}&limit=${limit}`, {
+        const response = await fetch(`${BASE_URL}/api/posts/comments/${postId}?page=${pageParam}&limit=${limit}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -401,7 +403,7 @@ export async function likePost(postId: number, userId: string, isLike: boolean){
 
         const method = isLike ? 'POST' : 'DELETE';
 
-        await fetch(`/api/posts/${isLike ? 'like' : 'unlike'}`, {
+        await fetch(`${BASE_URL}/api/posts/${isLike ? 'like' : 'unlike'}`, {
             method,
             headers: {
                 'Authorization': `bearer ${token}`,    
@@ -417,7 +419,7 @@ export async function likePost(postId: number, userId: string, isLike: boolean){
 
 export async function getStats(postId: number){
     try {        
-        const result = await fetch(`/api/posts/stats/${postId}`, {
+        const result = await fetch(`${BASE_URL}/api/posts/stats/${postId}`, {
             method: 'GET',
         })
 
@@ -432,7 +434,7 @@ export async function getStats(postId: number){
 
 export async function getLikes(postId: number){
     try {        
-        const result = await fetch(`/api/posts/likes/${postId}`, {
+        const result = await fetch(`${BASE_URL}/api/posts/likes/${postId}`, {
             method: 'GET',
         })
 
@@ -447,7 +449,7 @@ export async function getLikes(postId: number){
 
 export async function getSaves(postId: number){
     try {        
-        const result = await fetch(`/api/posts/saves/${postId}`, {
+        const result = await fetch(`${BASE_URL}/api/posts/saves/${postId}`, {
             method: 'GET',
         })
 
@@ -467,7 +469,7 @@ export async function savePost(postId: number, userId: string, isSave: boolean){
 
         const method = isSave ? 'POST' : 'DELETE';
 
-        await fetch(`/api/posts/${isSave ? 'save' : 'unsave'}`, {
+        await fetch(`${BASE_URL}/api/posts/${isSave ? 'save' : 'unsave'}`, {
             method,
             headers: {
                 'Authorization': `bearer ${token}`,    
@@ -501,7 +503,7 @@ export async function updatePost(post: IUpdatePost ){
         const token = localStorage.getItem('cookieFallback') ?? ''
 
         // Save post to database
-        const updatedPost = await fetch(`/api/posts/${post.postId} `, {
+        const updatedPost = await fetch(`${BASE_URL}/api/posts/${post.postId} `, {
             method: 'PUT',
             headers: {
                 'Authorization': `bearer ${token}`,    
@@ -523,7 +525,7 @@ export async function deletePost(postId: number){
     try {
         const token = localStorage.getItem('cookieFallback') ?? ''
 
-        await fetch(`/api/posts/${postId} `, {
+        await fetch(`${BASE_URL}/api/posts/${postId} `, {
             method: 'DELETE',
             headers: {
                 'Authorization': `bearer ${token}`,  
@@ -540,7 +542,7 @@ export async function getInfinitePosts({ pageParam, limit }: { pageParam: number
 
         const token = localStorage.getItem('cookieFallback') ?? ''
 
-        const response = await fetch(`/api/posts/infinite?page=${pageParam}&limit=${limit}`, {
+        const response = await fetch(`${BASE_URL}/api/posts/infinite?page=${pageParam}&limit=${limit}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -566,7 +568,7 @@ export async function getTrendingTags(){
         
         const token = localStorage.getItem('cookieFallback') ?? ''
 
-        const trendingTags = await fetch('/api/posts/trendingTags', {
+        const trendingTags = await fetch(`${BASE_URL}/api/posts/trendingTags`, {
             method: 'GET',
             headers: {
                 'Authorization': `bearer ${token}`,    
@@ -587,7 +589,7 @@ export async function searchPosts(searchTerm: string) {
     try {
         const token = localStorage.getItem('cookieFallback') ?? ''
 
-        const response = await fetch(`/api/posts/search/${searchTerm}`, {
+        const response = await fetch(`${BASE_URL}/api/posts/search/${searchTerm}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -618,7 +620,7 @@ export async function uploadProfileFile(file: File ){
 
         const token = localStorage.getItem('cookieFallback') ?? ''
 
-        const result = await fetch('/api/upload/ProfileImage', {
+        const result = await fetch(`${BASE_URL}/api/upload/ProfileImage`, {
             method: 'POST',
             headers: {
                 'Authorization': `bearer ${token}`,    
@@ -644,7 +646,7 @@ export async function uploadPostFile(file: File ){
 
         const token = localStorage.getItem('cookieFallback') ?? ''
 
-        const result = await fetch('/api/upload/PostImage', {
+        const result = await fetch(`${BASE_URL}/api/upload/PostImage`, {
             method: 'POST',
             headers: {
                 'Authorization': `bearer ${token}`,    
@@ -666,7 +668,7 @@ export async function deleteFile(fileId: string){
     try {
         const token = localStorage.getItem('cookieFallback') ?? ''
 
-        await fetch(`/api/upload/deleteImage`, {
+        await fetch(`${BASE_URL}/api/upload/deleteImage`, {
             method: 'DELETE',
             headers: {
                 'Authorization': `bearer ${token}`,  
