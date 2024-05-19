@@ -39,7 +39,7 @@ function Profile() {
             />
             <div className="flex flex-col">
               <div className="flex gap-14">
-                <p className='h1-semibold  text-light-1'>
+                <p className='h2-semibold lg:h1-semibold text-light-1 '>
                   {data.name}
                 </p>
                 {user.id === data.id ? 
