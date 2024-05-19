@@ -26,7 +26,7 @@ function PostStats({ post, userId, handlePostClick }: PostStatsProps) {
     const { mutate: likePost, isPending: isLiking } = useLikePost()
     const { mutate: savePost, isPending: isSavingPost } = useSavePost()
 
-    const { data: stats , isPending: isLoadingStats} = useGetStatsForPost(post.id)
+    const { data: stats , isPending: isLoadingStats} = useGetStatsForPost(post.id, userId)
 
     const handleLikePost = (e: React.MouseEvent ) => {
         e.stopPropagation()

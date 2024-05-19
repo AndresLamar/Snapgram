@@ -215,10 +215,10 @@ export const useCreateComment = () => {
     });
 };
 
-export const useGetStatsForPost = (postId: number) => {
+export const useGetStatsForPost = (postId: number, userId: string) => {
     return useQuery({
         queryKey: [QUERY_KEYS.GET_STATS_FOR_POST, postId],
-        queryFn: () => getStats(postId),
+        queryFn: () => getStats(postId, userId),
         enabled: !!postId 
     })
 }
@@ -323,10 +323,10 @@ export const useSavePost = () => {
     })
 }
 
-export const useGetPosts = (limit: number) => {
+export const useGetPosts = (limit: number, user_id: string) => {
     return useInfiniteQuery({
         queryKey: [QUERY_KEYS.GET_INFINITE_POSTS],
-        queryFn: ({ pageParam }) => getInfinitePosts({ pageParam, limit }),
+        queryFn: ({ pageParam }) => getInfinitePosts({ pageParam, limit, user_id }),
         initialPageParam: 0,
         getNextPageParam: (lastPage ) => {
             const pageNumber = lastPage[0]?.pageNumber
@@ -348,10 +348,10 @@ export const useGetTrendingTags = () => {
     })
 } 
 
-export const useSearchPosts = (searchTerm: string) => {
+export const useSearchPosts = (searchTerm: string, user_id: string) => {
     return useQuery({
         queryKey: [QUERY_KEYS.SEARCH_POSTS, searchTerm],
-        queryFn: () => searchPosts(searchTerm),
+        queryFn: () => searchPosts(searchTerm, user_id),
         enabled: !!searchTerm
     })
 }

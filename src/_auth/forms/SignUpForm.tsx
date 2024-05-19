@@ -46,7 +46,7 @@ function SignUpForm() {
     }
 
     localStorage.setItem('cookieFallback', session.token)
-    localStorage.setItem('username', session.username)
+    localStorage.setItem('userId', session.id)
 
     const isLoggedIn = await checkAuthUser()
 

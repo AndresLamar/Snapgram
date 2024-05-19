@@ -26,7 +26,10 @@ function Home() {
     threshold: 0.1,
   })
 
-  const { data: posts, fetchNextPage, hasNextPage, isPending: isPostLoading } = useGetPosts(3)
+
+  const user_id = localStorage.getItem('userId') ?? ''
+
+  const { data: posts, fetchNextPage, hasNextPage, isPending: isPostLoading } = useGetPosts(3, user_id)
 
   useEffect(() => {
     if(inView  && hasNextPage) fetchNextPage()

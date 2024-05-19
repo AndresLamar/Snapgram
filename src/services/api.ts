@@ -2,6 +2,8 @@ import { INewUser, INewPost, IUpdatePost, IUpdateUser, INewComment } from "@/typ
 
 const BASE_URL = 'https://snapgram-backend-z81v.onrender.com'
 
+// const BASE_URL = 'http://localhost:1234'
+
 /* LOGIN */
 
 export async function signInAccount(user: { email: string, password: string}){
@@ -49,7 +51,7 @@ export async function createUserAccount(user: INewUser){
     }
 }
 
-export async function getCurrentUser (user: { username: string }) {
+export async function getCurrentUser (user: { userId: string }) {
     try {                        
         const currentUser = await fetch(`${BASE_URL}/api/users/getUser`, {
             method: 'POST',
@@ -417,9 +419,9 @@ export async function likePost(postId: number, userId: string, isLike: boolean){
     }
 }
 
-export async function getStats(postId: number){
+export async function getStats(postId: number, userId: string){
     try {        
-        const result = await fetch(`${BASE_URL}/api/posts/stats/${postId}`, {
+        const result = await fetch(`${BASE_URL}/api/posts/stats/${postId}?user_id=${userId}`, {
             method: 'GET',
         })
 
@@ -537,12 +539,12 @@ export async function deletePost(postId: number){
     }
 }
 
-export async function getInfinitePosts({ pageParam, limit }: { pageParam: number; limit: number }) {
+export async function getInfinitePosts({ pageParam, limit, user_id }: { pageParam: number; limit: number, user_id: string }) {
     try {
 
         const token = localStorage.getItem('cookieFallback') ?? ''
 
-        const response = await fetch(`${BASE_URL}/api/posts/infinite?page=${pageParam}&limit=${limit}`, {
+        const response = await fetch(`${BASE_URL}/api/posts/infinite/${user_id}?page=${pageParam}&limit=${limit}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -584,12 +586,12 @@ export async function getTrendingTags(){
     }
 }
 
-export async function searchPosts(searchTerm: string) {
+export async function searchPosts(searchTerm: string, user_id: string) {
 
     try {
         const token = localStorage.getItem('cookieFallback') ?? ''
 
-        const response = await fetch(`${BASE_URL}/api/posts/search/${searchTerm}`, {
+        const response = await fetch(`${BASE_URL}/api/posts/search/${searchTerm}?user_id=${user_id}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

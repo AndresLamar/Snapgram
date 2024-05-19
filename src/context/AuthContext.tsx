@@ -35,9 +35,9 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     const checkAuthUser = async () => {
 
         try {
-            const username = localStorage.getItem('username') ?? ''
+            const userId = localStorage.getItem('userId') ?? ''
         
-            const currentAccount = await getCurrentUser({ username })
+            const currentAccount = await getCurrentUser({ userId })
 
             // const currentAccount = session            
 

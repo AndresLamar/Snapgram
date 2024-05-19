@@ -27,7 +27,9 @@ function Explore() {
     threshold: 0.1,
   })
 
-  const { data: posts, fetchNextPage, hasNextPage} = useGetPosts(6)
+  const user_id = localStorage.getItem('userId') ?? ''
+
+  const { data: posts, fetchNextPage, hasNextPage} = useGetPosts(6, user_id)
 
   const {data: trendingTags, isPending: isTrendingTagsPending } = useGetTrendingTags()
 
@@ -54,7 +56,7 @@ function Explore() {
 
   const debouncedValue = useDebounce(searchValue, 500)
 
-  const { data: searchedPosts, isFetching: isSearchFetching } = useSearchPosts(debouncedValue)
+  const { data: searchedPosts, isFetching: isSearchFetching } = useSearchPosts(debouncedValue, user_id)
 
   useEffect(() => {
     if(inView && !searchValue && hasNextPage) fetchNextPage()
