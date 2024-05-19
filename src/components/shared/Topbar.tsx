@@ -1,16 +1,18 @@
 import { Link, useNavigate } from "react-router-dom"
 import { Button } from "../ui/button"
-import { useUserContext } from "@/context/AuthContext"
+import { useUserContext, INITIAL_USER } from "@/context/AuthContext"
 
 function Topbar() {
 
   const navigate = useNavigate()
-  const { user } = useUserContext()
+  const { user, setUser, setIsAuthenticated } = useUserContext() 
+
 
   const signOut = () => {
     localStorage.clear()
-
-    navigate(0)
+    setUser(INITIAL_USER)
+    setIsAuthenticated(false)
+    navigate('/sign-in')
   }
 
   return (
