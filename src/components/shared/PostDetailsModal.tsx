@@ -20,7 +20,7 @@ type ModalProps = {
 
 const PostDetailsModal: React.FC<ModalProps> = ({ post, closeModal }) => {
   
-  const { data: comments, fetchNextPage, hasNextPage, isPending: isFetchingComments } = useGetCommetsForPost(15, post.id ?? '')
+  const { data: comments, fetchNextPage, hasNextPage, isRefetching: isFetchingComments } = useGetCommetsForPost(15, post.id ?? '')
   const { mutateAsync: createComment, isPending: isLoadingCreate } = useCreateComment()
   const { mutate: deletePost, isPending: isDeletingPost} = useDeletePost()
 
