@@ -14,7 +14,7 @@ function PostsForUser({user_id}: {user_id: string}) {
     threshold: 0.1,
     })
 
-  const { data: posts, fetchNextPage, hasNextPage} = useGetPostsForUser(6, user_id ?? '')
+  const { data: posts, fetchNextPage, hasNextPage, isRefetching: isUserPostsRefetching} = useGetPostsForUser(6, user_id ?? '')
 
   const [selectedPost, setSelectedPost] = useState<IPostProps | null>(null);
 
@@ -33,20 +33,22 @@ function PostsForUser({user_id}: {user_id: string}) {
     
   return (
     <div>
-        {!posts && <Loader />}
+        {isUserPostsRefetching ? <Loader /> : 
+        <> 
+          {posts?.pages?.map((item, index) => (
+          <GridPostList key={`page-${index}`} posts={item} showUser={false} showStats={false} handlePostClick={handlePostClick}/>
+          ))}
 
-        {posts?.pages?.map((item, index) => (
-        <GridPostList key={`page-${index}`} posts={item} showUser={false} showStats={false} handlePostClick={handlePostClick}/>
-        ))}
-
-        {selectedPost && <PostDetailsModal post={selectedPost} closeModal={closeModal} />}
+          {selectedPost && <PostDetailsModal post={selectedPost} closeModal={closeModal} />}
 
 
-        {hasNextPage && (
-        <div ref={ref} className='mt10'>
-            <Loader />
-        </div>
+          {hasNextPage && (
+          <div ref={ref} className='mt10'>
+              <Loader />
+          </div>
         )}
+        </>
+      }  
 
     </div>
   )
