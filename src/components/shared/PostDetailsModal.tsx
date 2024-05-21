@@ -138,17 +138,19 @@ const PostDetailsModal: React.FC<ModalProps> = ({ post, closeModal }) => {
             
             <div className='w-full h-44 max-h-44 overflow-scroll custom-scrollbar'>
 
-              {isFetchingComments && <Loader /> }
+              {isFetchingComments ? <Loader /> :
+               <>
+                  {comments?.pages.map((item, index) => (
+                    <Comments key={`page-${index}`} comments={item}/>
+                  ))}
 
-              {comments?.pages.map((item, index) => (
-                <Comments key={`page-${index}`} comments={item}/>
-              ))}
-
-              {hasNextPage && (
-                <div ref={ref} className='mt10'>
-                  <Loader />
-                </div>
-              )}
+                  {hasNextPage && (
+                    <div ref={ref} className='mt10'>
+                      <Loader />
+                    </div>
+                  )}
+               </>
+              }
             </div>
 
 
