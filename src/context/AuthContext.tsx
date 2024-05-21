@@ -28,7 +28,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const [user, setUser] = useState<IUser>(INITIAL_USER)
     const [isLoading, setIsLoading] = useState(false)
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
+    const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem("cookieFallback"))
 
     const navigate = useNavigate()
 
@@ -38,8 +38,6 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
             const userId = localStorage.getItem('userId') ?? ''
         
             const currentAccount = await getCurrentUser({ userId })
-
-            // const currentAccount = session            
 
             if (currentAccount){
                 setUser({
@@ -67,21 +65,18 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
         }
     }
 
-
-
     useEffect(() => {
-        
-        if(
-            localStorage.getItem('cookieFallback') === '[]' || localStorage.getItem('cookieFallback') === null
-        ) navigate('/sign-in')
-
-        if (user.id) {
-            setIsAuthenticated(true); // Establecer isAuthenticated como verdadero si ya hay datos de usuario
-            return; // No es necesario llamar a checkAuthUser si ya hay datos de usuario
+        const cookieFallback = localStorage.getItem("cookieFallback");
+        if (
+          cookieFallback === "[]" ||
+          cookieFallback === null ||
+          cookieFallback === undefined
+        ) {
+          navigate("/sign-in");
         }
-
-        checkAuthUser()
-    }, [])
+    
+        checkAuthUser();
+      }, []);
     
 
     const value = {
