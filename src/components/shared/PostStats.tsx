@@ -1,7 +1,7 @@
 import { useGetStatsForPost, useLikePost, useSavePost } from "@/lib/react-query/queriesAndMutations"
 import { IPostProps } from "@/types"
-import Loader from "./Loader"
 import useShallowNavigation from "@/hooks/useNavigateShallowTo"
+import { PostStatsSkeleton } from "../skeletons/PostStatsSkeleton"
 
 type PostStatsProps = {
     post: IPostProps
@@ -52,49 +52,48 @@ function PostStats({ post, userId, handlePostClick }: PostStatsProps) {
 
   return (
     <div className="flex justify-between items-center z-20">
-        {isLoadingStats ? <Loader /> : (
-        <div className="flex gap-2 ">     
-            <div className="flex gap-2 mr-5">
-                <img 
-                src={stats.has_liked === true ? "/assets/icons/liked.svg" : "/assets/icons/like.svg"} 
-                alt={stats.has_liked === true ? 'liked' : 'like'}
-                width={20}
-                height={20} 
-                onClick={handleLikePost}
-                className={`cursor-pointer ${isLiking ? 'pointer-events-none' : ''}`}
-                />
-                <p className="small-medium lg:base-medium">{stats.likes_count}</p>
+        {isLoadingStats ? <PostStatsSkeleton /> : (
+        <>
+            <div className="flex gap-2 ">     
+                <div className="flex gap-2 mr-5">
+                    <img 
+                    src={stats.has_liked === true ? "/assets/icons/liked.svg" : "/assets/icons/like.svg"} 
+                    alt={stats.has_liked === true ? 'liked' : 'like'}
+                    width={20}
+                    height={20} 
+                    onClick={handleLikePost}
+                    className={`cursor-pointer ${isLiking ? 'pointer-events-none' : ''}`}
+                    />
+                    <p className="small-medium lg:base-medium">{stats.likes_count}</p>
+                </div>
+
+                <div className="flex gap-2 mr-5">
+
+                    <img 
+                        src="/assets/icons/chat.svg" 
+                        alt="comment" 
+                        width={22}
+                        height={22}
+                        className='cursor-pointer'
+                        onClick={(event) => handleClick(post, event)} 
+                        data-id={`${post.id}`}
+                    />
+                    <p className="small-medium lg:base-medium">{stats.comment_count}</p>
+                    
+                </div>
             </div>
 
-            <div className="flex gap-2 mr-5">
-
-                <img 
-                    src="/assets/icons/chat.svg" 
-                    alt="comment" 
-                    width={22}
-                    height={22}
-                    className='cursor-pointer'
-                    onClick={(event) => handleClick(post, event)} 
-                    data-id={`${post.id}`}
+            <div className="flex gap-2 ">
+                <img
+                    src={stats.has_saved === true ? "/assets/icons/saved.svg" : "/assets/icons/save.svg"}
+                    alt={stats.has_saved === true ? 'saved' : 'save'}
+                    width={20}
+                    height={20} 
+                    onClick={handleSavePost}
+                    className={`cursor-pointer ${isSavingPost ? 'pointer-events-none' : ''}`}
                 />
-                <p className="small-medium lg:base-medium">{stats.comment_count}</p>
-                
             </div>
-        </div>
-        )}    
-
-        {isLoadingStats ? <Loader /> : (
-
-        <div className="flex gap-2 ">
-            <img
-                src={stats.has_saved === true ? "/assets/icons/saved.svg" : "/assets/icons/save.svg"}
-                alt={stats.has_saved === true ? 'saved' : 'save'}
-                width={20}
-                height={20} 
-                onClick={handleSavePost}
-                className={`cursor-pointer ${isSavingPost ? 'pointer-events-none' : ''}`}
-            />
-        </div>
+        </>
         )}
 
 

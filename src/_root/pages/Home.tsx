@@ -2,6 +2,7 @@ import Loader from "@/components/shared/Loader"
 import PostCard from "@/components/shared/PostCard";
 import PostDetailsModal from "@/components/shared/PostDetailsModal";
 import RightSidebar from "@/components/shared/RightSidebar"
+import HomeSkeleton from "@/components/skeletons/HomeSkeleton";
 
 import { useGetPosts } from '@/lib/react-query/queriesAndMutations'
 import { IPostProps } from "@/types";
@@ -31,6 +32,8 @@ function Home() {
 
   const { data: posts, fetchNextPage, hasNextPage, isPending: isPostLoading } = useGetPosts(3, user_id)
 
+  console.log(isPostLoading)
+
   useEffect(() => {
     if(inView  && hasNextPage) fetchNextPage()
   },[inView, fetchNextPage, hasNextPage,])
@@ -50,12 +53,18 @@ function Home() {
           </div>
         <div className="home-posts">
           <ul className='flex flex-col flex-1 gap-9 w-full'> 
-            {isPostLoading && !posts && <Loader />}
-            {posts?.pages.map(posts => (
-              posts.map((post: IPostProps) => (
-                <PostCard post={post} key={post.caption} handlePostClick={handlePostClick}/>
-              ))
-            ))}
+            {isPostLoading  ? (
+              <HomeSkeleton />
+             ): (
+              <>
+                {posts?.pages.map(posts => (
+                  posts.map((post: IPostProps) => (
+                    <PostCard post={post} key={post.caption} handlePostClick={handlePostClick}/>
+                  ))
+                ))}
+              </>
+            )} 
+            
           </ul>
 
           {selectedPost && <PostDetailsModal post={selectedPost} closeModal={closeModal} />}
