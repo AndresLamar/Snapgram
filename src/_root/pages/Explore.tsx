@@ -9,6 +9,7 @@ import { useInView } from "react-intersection-observer";
 import { IPostProps, ITrendingTag } from '@/types'
 import PostDetailsModal from '@/components/shared/PostDetailsModal'
 import ExploreSkeleton from '@/components/skeletons/ExploreSkeleton'
+import { TagsSkeleton } from '@/components/skeletons/TagsSkeleton'
 
 
 function Explore() {
@@ -97,7 +98,7 @@ function Explore() {
 
         <nav className='hidden md:flex -mt-8'>
             <ul className='flex flex-center text-center flex-wrap gap-3 mt-6'>
-              {isTrendingTagsPending ? <Loader /> : (
+              {isTrendingTagsPending ? <TagsSkeleton /> : (
                 <>
                   {trendingTags.filter((tag: ITrendingTag) => tag.tag_name !== '').map((tag: ITrendingTag, index: number) => (
                     <li 
