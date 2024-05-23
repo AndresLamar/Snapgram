@@ -1,11 +1,12 @@
 import Loader from "@/components/shared/Loader"
 import UserCard from "@/components/shared/UserCard"
+import UserCardSkeleton from "@/components/skeletons/UserCardSkeleton";
 import { useGetUsers } from "@/lib/react-query/queriesAndMutations"
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 
 function AllUsers() {
-  const { data: users, fetchNextPage, hasNextPage} = useGetUsers(9)
+  const { data: users, fetchNextPage, hasNextPage, isPending: isUsersLoading} = useGetUsers(9)
   const { ref, inView} = useInView()
 
   useEffect(() => {
@@ -23,12 +24,18 @@ function AllUsers() {
             />
             <h2 className='h3-bold md:h2-bold text-left w-full'>All Users</h2>
         </div>
-        {!users && <Loader />}
 
         <ul className='user-grid'>
-          {users?.pages.map((item, index) => (
-            <UserCard users={item} key={`page-${index}`} size = 'large'/>
-          ))}
+          {isUsersLoading ? (
+            <UserCardSkeleton size = 'large'/>
+          ) : (
+            <>
+              {users?.pages.map((item, index) => (
+                <UserCard users={item} key={`page-${index}`} size = 'large'/>
+              ))}
+            </>
+          )}
+          
         </ul> 
 
         {hasNextPage && (

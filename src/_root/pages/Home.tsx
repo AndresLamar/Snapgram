@@ -32,8 +32,6 @@ function Home() {
 
   const { data: posts, fetchNextPage, hasNextPage, isPending: isPostLoading } = useGetPosts(3, user_id)
 
-  console.log(isPostLoading)
-
   useEffect(() => {
     if(inView  && hasNextPage) fetchNextPage()
   },[inView, fetchNextPage, hasNextPage,])

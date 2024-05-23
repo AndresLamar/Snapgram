@@ -3,13 +3,15 @@ import { Button } from "../ui/button"
 import { useUserContext, INITIAL_USER } from "@/context/AuthContext"
 import { sidebarLinks } from "@/constants"
 import { INavLink } from "@/types"
+import LeftSideUserSkeleton from "../skeletons/LeftSideUserSkeleton"
 
 function LeftSidebar() {
 
   const { pathname } = useLocation()
   const navigate = useNavigate()
-  const { user, setUser, setIsAuthenticated } = useUserContext() 
+  const { user, setUser, setIsAuthenticated, isLoading } = useUserContext() 
 
+  console.log(isLoading)
   const signOut = () => {
     localStorage.clear()
     setUser(INITIAL_USER)
@@ -29,22 +31,30 @@ function LeftSidebar() {
           />
         </Link>
 
-        <Link to={`/profile/${user.id}`} className='flex gap-3 mt-8 items-center'>   
-           <img 
-              src={user.imageurl || '/assets/icons/profile-placeholder.svg'}
-              alt='profile'
-              className='h-14 w-14 rounded-full object-cover'
-            />
-            
-            <div className='flex flex-col'>
-              <p className='body-bold'>
-                {user.name}
-              </p>
-              <p className='small-regular text-light-3'>
-                @{user.username}
-              </p>
-            </div>
-        </Link>
+        {isLoading ? (
+          <LeftSideUserSkeleton />
+        ) : (
+          <>
+            <Link to={`/profile/${user.id}`} className='flex gap-3 mt-8 items-center'>   
+              <img 
+                  src={user.imageurl || '/assets/icons/profile-placeholder.svg'}
+                  alt='profile'
+                  className='h-14 w-14 rounded-full object-cover'
+                />
+                
+                <div className='flex flex-col'>
+                  <p className='body-bold'>
+                    {user.name}
+                  </p>
+                  <p className='small-regular text-light-3'>
+                    @{user.username}
+                  </p>
+                </div>
+            </Link>
+          </>
+        )}
+
+        
 
         <ul className='flex flex-col gap-2'>
           {sidebarLinks.map((link: INavLink) => {

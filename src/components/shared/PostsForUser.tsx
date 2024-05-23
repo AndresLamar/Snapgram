@@ -5,6 +5,7 @@ import { useGetPostsForUser } from '@/lib/react-query/queriesAndMutations';
 import GridPostList from '@/_root/pages/GridPostList';
 import { IPostProps } from '@/types';
 import PostDetailsModal from './PostDetailsModal';
+import { GridPostsSkeleton } from '../skeletons/GridPostsSkeleton';
 
 
 function PostsForUser({user_id}: {user_id: string}) {
@@ -33,7 +34,7 @@ function PostsForUser({user_id}: {user_id: string}) {
     
   return (
     <div>
-        {isUserPostsRefetching ? <Loader /> : 
+        {isUserPostsRefetching ? <GridPostsSkeleton showUser={false} showStats={false} /> : 
         <> 
           {posts?.pages?.map((item, index) => (
           <GridPostList key={`page-${index}`} posts={item} showUser={false} showStats={false} handlePostClick={handlePostClick}/>

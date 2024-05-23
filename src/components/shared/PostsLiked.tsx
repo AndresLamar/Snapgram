@@ -5,6 +5,7 @@ import { useGetPostsLikedForUser } from '@/lib/react-query/queriesAndMutations';
 import GridPostList from '@/_root/pages/GridPostList';
 import { IPostProps } from '@/types';
 import PostDetailsModal from './PostDetailsModal';
+import { GridPostsSkeleton } from '../skeletons/GridPostsSkeleton';
 
 
 function PostsLiked({user_id}: {user_id: string}) {
@@ -14,7 +15,7 @@ function PostsLiked({user_id}: {user_id: string}) {
     threshold: 0.1,
     })
 
-  const { data: posts, fetchNextPage, hasNextPage} = useGetPostsLikedForUser(6, user_id ?? '')
+  const { data: posts, fetchNextPage, hasNextPage, isPending: isUserLikedPostsPending} = useGetPostsLikedForUser(6, user_id ?? '')
 
   const [selectedPost, setSelectedPost] = useState<IPostProps | null>(null);
 
@@ -33,11 +34,13 @@ function PostsLiked({user_id}: {user_id: string}) {
     
   return (
     <div>
-        {!posts && <Loader />}
-
-        {posts?.pages?.map((item, index) => (
-        <GridPostList key={`page-${index}`} posts={item} showUser={false} showStats={false} handlePostClick={handlePostClick}/>
-        ))}
+        {isUserLikedPostsPending ? <GridPostsSkeleton showUser={false} showStats={false} /> : (
+        <>
+            {posts?.pages?.map((item, index) => (
+            <GridPostList key={`page-${index}`} posts={item} showUser={false} showStats={false} handlePostClick={handlePostClick}/>
+            ))}
+        </>
+        )}
 
         {selectedPost && <PostDetailsModal post={selectedPost} closeModal={closeModal} />}
 

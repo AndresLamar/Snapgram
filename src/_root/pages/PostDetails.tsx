@@ -10,6 +10,8 @@ import { useInView } from "react-intersection-observer"
 import { toast } from "@/components/ui/use-toast"
 import Comments from "@/components/shared/Comments"
 import { Input } from "@/components/ui/input"
+import PostDetailsSkeleton from "@/components/skeletons/PostDetailsSkeleton"
+import CommentsSkeleton from "@/components/skeletons/CommentsSkeleton"
 
 
 function PostDetails() {
@@ -62,7 +64,7 @@ function PostDetails() {
 
   return (
     <div className='post_details-container'>
-      {isPending ? <Loader /> : (
+      {isPending ? <PostDetailsSkeleton /> : (
         <div className='post_details-card'>
         <img 
           src={post?.imageurl} 
@@ -134,17 +136,19 @@ function PostDetails() {
             
             <div className='w-full h-44 max-h-44 overflow-scroll custom-scrollbar'>
 
-              {isFetchingComments && <Loader /> }
+            {isFetchingComments ? <CommentsSkeleton /> :
+               <>
+                  {comments?.pages.map((item, index) => (
+                    <Comments key={`page-${index}`} comments={item}/>
+                  ))}
 
-              {comments?.pages.map((item, index) => (
-                <Comments key={`page-${index}`} comments={item}/>
-              ))}
-
-              {hasNextPage && (
-                <div ref={ref} className='mt10'>
-                  <Loader />
-                </div>
-              )}
+                  {hasNextPage && (
+                    <div ref={ref} className='mt10'>
+                      <Loader />
+                    </div>
+                  )}
+               </>
+              }
             </div>
 
 
