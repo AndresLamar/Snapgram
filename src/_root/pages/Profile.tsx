@@ -2,7 +2,6 @@ import { useGetPostsForUser, useGetUserById } from "@/lib/react-query/queriesAnd
 import { useParams,useLocation, Link  } from "react-router-dom";
 import { useUserContext } from '@/context/AuthContext'
 import FollowButton from "@/components/shared/FollowButton";
-import Loader from '@/components/shared/Loader'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import PostsLiked from "@/components/shared/PostsLiked";
 import PostsForUser from "@/components/shared/PostsForUser";

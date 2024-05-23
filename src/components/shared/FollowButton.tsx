@@ -2,7 +2,6 @@ import React from 'react'
 import { Button } from '../ui/button'
 import { useFollowUser, useGetFollowersForUser } from '@/lib/react-query/queriesAndMutations'
 import { IUser } from '@/types'
-import Loader from './Loader'
 import { Skeleton } from '../ui/skeleton'
 
 type FollowButtonProps = {
