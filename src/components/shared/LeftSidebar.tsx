@@ -11,7 +11,6 @@ function LeftSidebar() {
   const navigate = useNavigate()
   const { user, setUser, setIsAuthenticated, isLoading } = useUserContext() 
 
-  console.log(isLoading)
   const signOut = () => {
     localStorage.clear()
     setUser(INITIAL_USER)

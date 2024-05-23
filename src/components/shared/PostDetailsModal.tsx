@@ -125,7 +125,7 @@ const PostDetailsModal: React.FC<ModalProps> = ({ post, closeModal }) => {
               <div className='flex flex-1 w-full gap-2 small-medium lg:base-semibold'>
                 <p className='text-light-1'>{post?.caption}</p>
                 <ul className='flex gap-1 '>
-                  {post?.tags?.map((tag: string) => (
+                  {post?.tags?.filter((tag: string) => tag !== '').map((tag: string) => (
                       <li key={tag} className='text-light-3'>
                           #{tag}
                       </li>

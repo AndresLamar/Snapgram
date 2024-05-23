@@ -99,7 +99,7 @@ function Explore() {
             <ul className='flex flex-center text-center flex-wrap gap-3 mt-6'>
               {isTrendingTagsPending ? <Loader /> : (
                 <>
-                  {trendingTags.map((tag: ITrendingTag, index: number) => (
+                  {trendingTags.filter((tag: ITrendingTag) => tag.tag_name !== '').map((tag: ITrendingTag, index: number) => (
                     <li 
                       key={index} 
                       className='explore-tags'
