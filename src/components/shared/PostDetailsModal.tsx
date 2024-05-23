@@ -12,6 +12,7 @@ import Loader from './Loader';
 import { useInView } from 'react-intersection-observer';
 import { toast } from '../ui/use-toast';
 import Modal from './Modal';
+import CommentsSkeleton from '../skeletons/CommentsSkeleton';
 
 type ModalProps = {
   post: IPostProps;
@@ -137,8 +138,7 @@ const PostDetailsModal: React.FC<ModalProps> = ({ post, closeModal }) => {
             </div>
             
             <div className='w-full h-44 max-h-44 overflow-scroll custom-scrollbar'>
-
-              {isFetchingComments ? <Loader /> :
+              {isFetchingComments ? <CommentsSkeleton /> :
                <>
                   {comments?.pages.map((item, index) => (
                     <Comments key={`page-${index}`} comments={item}/>

@@ -8,6 +8,7 @@ import Loader from '@/components/shared/Loader'
 import { useInView } from "react-intersection-observer";
 import { IPostProps, ITrendingTag } from '@/types'
 import PostDetailsModal from '@/components/shared/PostDetailsModal'
+import ExploreSkeleton from '@/components/skeletons/ExploreSkeleton'
 
 
 function Explore() {
@@ -29,7 +30,7 @@ function Explore() {
 
   const user_id = localStorage.getItem('userId') ?? ''
 
-  const { data: posts, fetchNextPage, hasNextPage} = useGetPosts(6, user_id)
+  const { data: posts, fetchNextPage, hasNextPage, isPending: isPostFetching} = useGetPosts(6, user_id)
 
   const {data: trendingTags, isPending: isTrendingTagsPending } = useGetTrendingTags()
 
@@ -56,19 +57,19 @@ function Explore() {
 
   const debouncedValue = useDebounce(searchValue, 500)
 
-  const { data: searchedPosts, isFetching: isSearchFetching } = useSearchPosts(debouncedValue, user_id)
+  const { data: searchedPosts, isFetching: isSearchFetching,  } = useSearchPosts(debouncedValue, user_id)
 
   useEffect(() => {
     if(inView && !searchValue && hasNextPage) fetchNextPage()
   },[inView, searchValue, fetchNextPage, hasNextPage])
 
-  if(!posts || isTrendingTagsPending) {
-    return (
-      <div className = 'flex-center w-full h-full'>
-        <Loader />
-      </div>
-    )
-  }
+  // if(!posts || isTrendingTagsPending) {
+  //   return (
+  //     <div className = 'flex-center w-full h-full'>
+  //       <Loader />
+  //     </div>
+  //   )
+  // }
 
   const shouldShowSearchResults = searchValue !== ''
   const shouldShowPosts = !shouldShowSearchResults && 
@@ -96,15 +97,20 @@ function Explore() {
 
         <nav className='hidden md:flex -mt-8'>
             <ul className='flex flex-center text-center flex-wrap gap-3 mt-6'>
-              {trendingTags.map((tag: ITrendingTag, index: number) => (
-                <li 
-                  key={index} 
-                  className='explore-tags'
-                  onClick={() => setSearchValue(tag.tag_name)}
-                >
-                    #{tag.tag_name}
-                </li>
-              ))}
+              {isTrendingTagsPending ? <Loader /> : (
+                <>
+                  {trendingTags.map((tag: ITrendingTag, index: number) => (
+                    <li 
+                      key={index} 
+                      className='explore-tags'
+                      onClick={() => setSearchValue(tag.tag_name)}
+                    >
+                        #{tag.tag_name}
+                    </li>
+                  ))}
+                </>
+              )}
+              
             </ul>
           </nav>
       </div>
@@ -124,16 +130,23 @@ function Explore() {
       </div>
 
       <div className='flex flex-wrap gap-9 w-full max-w-5xl'>
-        {shouldShowSearchResults ? (
-          <SearchResults 
-            isSearchFetching = {isSearchFetching}
-            searchedPosts = {searchedPosts}
-          />
+        {isPostFetching ? (
+          <ExploreSkeleton />
+        ) : shouldShowSearchResults && searchedPosts ? (
+          <SearchResults
+            isSearchFetching={isSearchFetching}
+            searchedPosts={searchedPosts}
+          /> 
         ) : shouldShowPosts ? (
-          <p className='text-light-4 mt-10 text-center w-full'>End of posts</p>
-        ): posts.pages.map((item, index) => (
-          <GridPostList key={`page-${index}`} posts={item} handlePostClick={handlePostClick}/>
-        ))}
+          <p className="text-light-4 mt-10 text-center w-full">End of posts</p>
+        ) : (
+          posts?.pages.map((item, index) => {
+            if (item)
+              return (
+                <GridPostList key={`page-${index}`} posts={item} handlePostClick={handlePostClick} />
+              );
+          })
+        )}   
       </div>
 
       {selectedPost && <PostDetailsModal post={selectedPost} closeModal={closeModal} />}

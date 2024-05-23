@@ -35,6 +35,8 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     const checkAuthUser = async () => {
 
         try {
+            setIsLoading(true)
+
             const userId = localStorage.getItem('userId') ?? ''
         
             const currentAccount = await getCurrentUser({ userId })

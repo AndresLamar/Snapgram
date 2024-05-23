@@ -2,7 +2,7 @@ import React from 'react'
 import { Button } from '../ui/button'
 import { useFollowUser, useGetFollowersForUser } from '@/lib/react-query/queriesAndMutations'
 import { IUser } from '@/types'
-import Loader from './Loader'
+import { Skeleton } from '../ui/skeleton'
 
 type FollowButtonProps = {
     user: IUser
@@ -13,10 +13,6 @@ function FollowButton({ user, userId }: FollowButtonProps) {
   const { mutate: followUser, isPending: isFollowing } = useFollowUser()
 
   const { data: follows , isPending: isLoadingFollows} = useGetFollowersForUser(user.id)
-
-  if(isLoadingFollows){
-    return <Loader />
-  }
 
     const handleFollowUser = (e: React.MouseEvent ) => {
         e.stopPropagation()
@@ -30,6 +26,8 @@ function FollowButton({ user, userId }: FollowButtonProps) {
 
   return (
     <>
+    {isLoadingFollows ? <Skeleton className="mt-3 h-10 w-full"/> : (
+
         <Button 
           className={`${follows.includes(userId) ? 'shad-button_dark_4' : 'shad-button_primary'} whitespaces-nowrap mt-3`} onClick={handleFollowUser}> 
           <img 
@@ -41,6 +39,7 @@ function FollowButton({ user, userId }: FollowButtonProps) {
             />
           {follows.includes(userId) ? 'Following' : 'Follow'}
         </Button>
+    )}
     </>
   )
 }

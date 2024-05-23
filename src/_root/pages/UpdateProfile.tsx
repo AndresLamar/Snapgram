@@ -70,9 +70,6 @@ function UpdateProfile() {
     
   }
 
-  if(isUserLoading) return <Loader />  
-
-
   return (
     <div className='flex flex-1'>
       <div className='common-container'>
@@ -85,7 +82,7 @@ function UpdateProfile() {
             />
             <h2 className='h3-bold md:h2-bold text-left w-full'>Edit Post</h2>
         </div>
-
+        {isUserLoading && <Loader />}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-9 w-full max-w-5xl">
 
